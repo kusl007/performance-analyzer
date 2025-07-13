@@ -18,4 +18,5 @@ export interface AnalyzeRequest {
   url: string
 }
 
-export interface AnalyzeResponse extends PerformanceData {}
+export type AnalyzeResponse = PerformanceData;
+
