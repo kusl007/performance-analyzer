@@ -1,36 +1,214 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# URL Performance Analyzer
 
-## Getting Started
+A React web application that analyzes the performance of any given URL, measuring load time, page size, and number of HTTP requests.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **Load Time Analysis**: Measures total page load duration
+- **Page Size Breakdown**: Shows aggregate size of HTML, CSS, JS, and images
+- **Request Count**: Displays total number of HTTP requests
+- **Performance Grading**: Provides A-D grade based on load time
+- **Resource Breakdown**: Visual breakdown of different resource types
+- **Performance Recommendations**: Actionable suggestions for improvement
+- **Responsive Design**: Works seamlessly on desktop and mobile devices
+
+## Tech Stack
+
+- **Frontend**: React 18 with Next.js 14 (App Router)
+- **Styling**: Tailwind CSS with shadcn/ui components
+- **TypeScript**: Full type safety throughout the application
+- **API**: Next.js API routes for backend functionality
+
+
+
+
+
+
+
+## Installation & Setup
+
+### Prerequisites
+- Node.js 18+ 
+- npm or yarn package manager
+
+### Steps
+
+1. **Clone the repository**
+    ``` bash
+   git clone <repository-url>
+   cd url-performance-analyzer
+    ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
+
+3. **Run the development server**
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
+
+
+4. **Open your browser**
+   Navigate to [http://localhost:3000](http://localhost:3000)
+
+## Usage
+
+1. Enter a URL in the input field (with or without https://)
+2. Click "Analyze Performance" to start the analysis
+3. View the results including:
+   - Overall performance grade (A-D)
+   - Load time in seconds
+   - Total page size
+   - Number of HTTP requests
+   - Resource breakdown by type
+   - Performance recommendations
+
+## Project Structure
+
+```
+src/
+├── app/
+│   ├── api/
+│   │   └── analyze/
+│   │   └── route.ts          # API endpoint for performance analysis
+│   ├── components/
+│   │   └── PerformanceResults.tsx # Results display component
+│   ├── types/
+│   │   └── performance.ts        # TypeScript type definitions
+│   ├── layout.tsx               # Root layout component
+│   ├── page.tsx                 # Main application page
+│   └── globals.css              # Global styles
+├── components/ui/               # shadcn/ui components
+└── lib/
+    └── utils.ts                 # 
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## API Endpoints
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### POST /api/analyze
+Analyzes the performance of a given URL.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+**Request Body:**
+```json
+{
+  "url": "https://example.com"
+}
+```
 
-## Learn More
+**Response:**
+```json
+{
+  "url": "https://example.com",
+  "loadTime": 1250,
+  "pageSize": {
+    "total": 1048576,
+    "html": 20480,
+    "css": 102400,
+    "js": 512000,
+    "images": 413696
+  },
+  "requestCount": 25,
+  "timestamp": "2024-01-15T10:30:00.000Z",
+  "recommendations": [
+    "Consider optimizing server response time",
+    "JavaScript bundle size is large - consider code splitting"
+  ]
+}
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Performance Analysis Implementation
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+This application now uses **Google Lighthouse** for real website performance analysis, providing accurate and comprehensive metrics.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Real Implementation Features:
+- **Lighthouse Integration**: Uses Google's Lighthouse library for industry-standard performance auditing
+- **Chrome Headless**: Launches Chrome in headless mode for consistent testing environment
+- **Comprehensive Metrics**: Measures Speed Index, First Contentful Paint, Largest Contentful Paint
+- **Resource Analysis**: Real breakdown of HTML, CSS, JavaScript, and image sizes
+- **Smart Recommendations**: Generated based on actual Lighthouse audit results
 
-## Deploy on Vercel
+### Key Metrics Analyzed:
+- **Speed Index**: How quickly content is visually displayed
+- **First Contentful Paint**: Time until first content appears
+- **Largest Contentful Paint**: Time until largest element loads
+- **Total Byte Weight**: Complete resource size analysis
+- **Network Requests**: Actual HTTP request count and details
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Lighthouse Audits Used:
+- Performance category audits
+- Resource optimization checks
+- Render-blocking resource detection
+- Unused code identification
+- Image optimization analysis
+- Text compression evaluation
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Current Implementation:
+```javascript
+// Real Lighthouse implementation
+import lighthouse from "lighthouse"
+import { launch } from 'chrome-launcher'
+
+async function analyzeWebsitePerformance(url) {
+  const chrome = await launch({ chromeFlags: ["--headless"] })
+  const options = {
+    port: chrome.port,
+    output: "json",
+    onlyCategories: ["performance"]
+  }
+  
+  const runnerResult = await lighthouse(url, options)
+  const audits = runnerResult.lhr.audits
+  
+  // Extract real performance metrics
+  const speedIndex = audits["speed-index"]?.numericValue || 0
+  const totalBytes = audits["total-byte-weight"]?.numericValue || 0
+  
+  await chrome.kill()
+  return performanceData
+}
+```
+
+## Deployment
+
+### Vercel (Recommended)
+1. Push your code to GitHub
+2. Connect your repository to Vercel
+3. Deploy automatically with zero configuration
+
+### Other Platforms
+- **Netlify**: Supports Next.js with build plugins
+- **Railway**: Simple deployment with GitHub integration
+- **Docker**: Use the included Dockerfile for containerized deployment
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch (\`git checkout -b feature/amazing-feature\`)
+3. Commit your changes (\`git commit -m 'Add amazing feature'\`)
+4. Push to the branch (\`git push origin feature/amazing-feature\`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Future Enhancements
+
+- [ ] Real performance analysis using Puppeteer/Lighthouse
+- [ ] Historical performance tracking
+- [ ] Comparison between multiple URLs
+- [ ] Export results to PDF/CSV
+- [ ] Performance monitoring alerts
+- [ ] Mobile vs Desktop performance comparison
+- [ ] Core Web Vitals integration
+- [ ] Performance budget tracking
+
+## Support
+
+For questions or support, please open an issue in the GitHub repository.
