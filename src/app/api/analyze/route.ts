@@ -19,6 +19,7 @@ export async function POST(request: NextRequest) {
     const normalizedUrl = url.startsWith("http") ? url : `https://${url}`
 
     const performanceData = await analyzeWebsitePerformance(normalizedUrl)
+    console.log("Performance data:", performanceData)
 
 
     return NextResponse.json(performanceData)
