@@ -19,4 +19,3 @@ export interface AnalyzeRequest {
 }
 
 export type AnalyzeResponse = PerformanceData;
-
