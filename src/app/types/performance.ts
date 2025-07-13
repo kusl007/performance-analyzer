@@ -7,6 +7,7 @@ export interface PerformanceData {
     css: number
     js: number
     images: number
+    other: number 
   }
   requestCount: number
   timestamp: string

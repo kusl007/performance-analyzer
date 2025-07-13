@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
     const normalizedUrl = url.startsWith("http") ? url : `https://${url}`
 
     const performanceData = await analyzeWebsitePerformance(normalizedUrl)
-    console.log("i got performance data", performanceData)
+
 
     return NextResponse.json(performanceData)
   } catch (error) {
@@ -88,6 +88,8 @@ async function analyzeWebsitePerformance(url: string): Promise<PerformanceData> 
       css,
       js,
       images,
+      other
+
     },
     timestamp: new Date().toISOString(),
     recommendations: recommendations.length > 0 ? recommendations : undefined,
