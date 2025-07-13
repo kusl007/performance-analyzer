@@ -5,6 +5,7 @@ import puppeteer from "puppeteer"
 export async function POST(request: NextRequest) {
   try {
     const { url }: AnalyzeRequest = await request.json()
+    console.log("i reached here at backednd with url",url)
 
     if (!url) {
       return NextResponse.json({ error: "URL is required" }, { status: 400 })

@@ -51,11 +51,11 @@ export default function Home() {
         },
         body: JSON.stringify({ url: normalizedUrl }),
       })
-
+      
       if (!response.ok) {
         throw new Error("Failed to analyze URL")
       }
-
+      
       const data = await response.json()
       setResults(data)
     } catch (err) {
